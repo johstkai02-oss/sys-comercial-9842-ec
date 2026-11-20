@@ -165,16 +165,4 @@ if(v4K(localStorage.getItem("v4_lic")||"")){v4L.style.display="none";var s=sessi
 </script>
 
 <script>
-function v4Modo(u){
-  var b=document.querySelectorAll("div,section,aside");
-  for(var i=0;i<b.length;i++){
-    var t=b[i].innerText||"";
-    if(t.indexOf("Nuevo Producto")>-1 && t.indexOf("Registrar Producto")>-1 && b[i].children.length<10){
-      b[i].style.display=(u==="admin"?"":"none");
-    }
-    if((t.indexOf("Capital Total")>-1 || t.indexOf("Ganancia Neta")>-1) && b[i].children.length<=3 && t.length<80){
-      b[i].style.display=(u==="admin"?"":"none");
-    }
-  }
-}
-</script>
+function v4Modo(u){var f=document.querySelector("form");if(f&&f.parentElement)f.parentElement.style.display=(u==="admin"?"":"none");var d=document.querySelectorAll("div");for(var i=0;i<d.length;i++){var t=d[i].innerText||"";if((t.indexOf("Capital Total")===0||t.indexOf("Ganancia Neta")===0)&&d[i].children.length<=3&&t.length<60)d[i].style.display=(u==="admin"?"":"none")}}</script>
