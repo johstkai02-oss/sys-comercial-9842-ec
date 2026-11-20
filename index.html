@@ -156,7 +156,7 @@ actualizarTodo();
 function v4U(){return JSON.parse(localStorage.getItem("v4_u")||'{"admin":"1234"}')}
 function v4K(s){var p=s.trim().toUpperCase().split("-");if(p.length!==3||p.at(0)!=="EC")return 0;var e=parseInt(p.at(1),36),g=parseInt(p.at(2),36);return((e*73+9842)%99991)===g&&(e===99999999||Date.now()<e*86400000)?1:0}
 function v4A(){var s=v4s.value.trim().toUpperCase();if(v4K(s)){localStorage.setItem("v4_lic",s);v4L.style.display="none";v4G.style.display="flex"}else v4e1.innerText="Serial inválido o vencido"}
-function v4E(){var u=v4u.value.trim(),p=v4p.value.trim(),d=v4U();if(d[u]===p){sessionStorage.setItem("v4_s",u);v4t.innerText=u;v4db.style.display=u==="admin"?"inline-block":"none";v4Modo(u);v4G.style.display="none"}else v4e2.innerText="Datos incorrectos"}
+function v4E(){var u=v4u.value.trim(),p=v4p.value.trim(),d=v4U();if(d[u]===p){sessionStorage.setItem("v4_s",u);v4t.innerText=u;v4db.style.display=u==="admin"?"inline-block":"none";v4G.style.display="none";v4Modo(u)}else v4e2.innerText="Datos incorrectos"}
 function v4O(){var d=v4U(),h="";for(var k in d)h+="<div>👤 "+k+" ("+d[k]+") "+(k!=="admin"?"<a href='#' style='color:#f87171' onclick='v4B(\""+k+"\");return false'>Borrar</a>":"")+"</div>";v4ls.innerHTML=h;v4D.style.display="flex"}
 function v4C(){var d=v4U();if(v4nu.value&&v4np.value){d[v4nu.value.trim()]=v4np.value.trim();localStorage.setItem("v4_u",JSON.stringify(d));v4nu.value=v4np.value="";v4O()}}
 function v4B(k){var d=v4U();delete d[k];localStorage.setItem("v4_u",JSON.stringify(d));v4O()}
@@ -168,12 +168,12 @@ if(v4K(localStorage.getItem("v4_lic")||"")){v4L.style.display="none";var s=sessi
 function v4Modo(u){
   var b=document.querySelectorAll("div,section,aside");
   for(var i=0;i<b.length;i++){
-    var t=b.at(i).innerText||"";
-    if(t.indexOf("Nuevo Producto")>-1 && t.indexOf("Registrar Producto")>-1 && b.at(i).children.length<10){
-      b.at(i).style.display=(u==="admin"?"":"none");
+    var t=b[i].innerText||"";
+    if(t.indexOf("Nuevo Producto")>-1 && t.indexOf("Registrar Producto")>-1 && b[i].children.length<10){
+      b[i].style.display=(u==="admin"?"":"none");
     }
-    if((t.indexOf("Capital Total")>-1 || t.indexOf("Ganancia Neta")>-1) && b.at(i).children.length<=3 && t.length<80){
-      b.at(i).style.display=(u==="admin"?"":"none");
+    if((t.indexOf("Capital Total")>-1 || t.indexOf("Ganancia Neta")>-1) && b[i].children.length<=3 && t.length<80){
+      b[i].style.display=(u==="admin"?"":"none");
     }
   }
 }
