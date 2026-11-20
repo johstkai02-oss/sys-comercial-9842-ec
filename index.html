@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=1024"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icono.png"><title>Sistema Comercial v4</title><style>#v4lock{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2147483647;background:#0f172a;display:flex;align-items:center;justify-content:center;font-family:sans-serif;color:#fff}#v4card{background:#1e293b;padding:40px;border-radius:16px;border:1px solid #334155;width:380px;text-align:center;box-shadow:0 20px 25px rgba(0,0,0,0.6)}#v4card input{width:100%;padding:14px;margin:10px 0;border-radius:8px;border:1px solid #475569;background:#0f172a;color:#fff;font-size:18px;box-sizing:border-box}#v4card button{width:100%;padding:16px;border:none;border-radius:8px;background:#0284c7;color:#fff;font-size:18px;font-weight:bold;margin-top:10px;cursor:pointer}#v4err{color:#f87171;display:none;margin-top:12px;font-size:16px}</style></head><body><div id="v4lock"><div id="v4card"><h2>ACCESO AUTORIZADO</h2><input id="v4u" placeholder="Usuario"><input id="v4p" placeholder="Clave"><button onclick="v4go()">ENTRAR</button><div id="v4err">Datos incorrectos</div></div></div><script>function v4go(){if(document.getElementById("v4u").value.trim()==="admin"&&document.getElementById("v4p").value.trim()==="TIENDA2026"){document.getElementById("v4lock").style.display="none";localStorage.setItem("v4ok","1")}else{document.getElementById("v4err").style.display="block"}}window.addEventListener("load",()=>{if(localStorage.getItem("v4ok")==="1")document.getElementById("v4lock").style.display="none"});if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");document.oncontextmenu=()=>false;</script><!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -35,7 +35,7 @@
   .btn-vender { background: #22c55e; }
   .btn-del { background: #64748b; }
 </style>
-<link rel="manifest" href="manifest.json"></head>
+</head>
 <body>
 <div class="top-bar">
   <div>
@@ -145,6 +145,5 @@ function actualizarTodo() {
 }
 actualizarTodo();
 </script>
-<script>if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");</script></body>
+</body>
 </html>
-<style>#v4lock{position:fixed;inset:0;z-index:999999;background:#0f172a;display:flex;align-items:center;justify-content:center;font-family:sans-serif;color:#fff}#v4card{background:#1e293b;padding:35px;border-radius:16px;border:1px solid #334155;width:360px;text-align:center}#v4card input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #475569;background:#0f172a;color:#fff;font-size:16px}#v4card button{width:100%;padding:14px;border:none;border-radius:8px;background:#0284c7;color:#fff;font-size:16px;font-weight:bold;margin-top:8px}#v4err{color:#f87171;display:none;margin-top:10px}</style><div id="v4lock"><div id="v4card"><h2>ACCESO AUTORIZADO</h2><input id="v4u" placeholder="Usuario"><input id="v4p" placeholder="Clave"><button onclick="v4go()">ENTRAR</button><div id="v4err">Datos incorrectos</div></div></div><script>function v4go(){if(document.getElementById("v4u").value.trim()==="admin"&&document.getElementById("v4p").value.trim()==="TIENDA2026"){document.getElementById("v4lock").remove();try{localStorage.setItem("v4ok","1")}catch(e){}}else{document.getElementById("v4err").style.display="block"}}window.addEventListener("DOMContentLoaded",()=>{try{if(localStorage.getItem("v4ok")==="1")document.getElementById("v4lock").remove()}catch(e){}});document.oncontextmenu=()=>false;</script>
