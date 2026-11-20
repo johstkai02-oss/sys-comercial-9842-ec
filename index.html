@@ -154,7 +154,7 @@ actualizarTodo();
 <div id="v4bar"><span id="v4t" style="background:#1e293b;color:#38bdf8;padding:8px 12px;border-radius:8px;font-weight:bold">admin</span><button id="v4db" style="background:#0284c7" onclick="v4O()">Dashboard</button><button style="background:#dc2626" onclick="sessionStorage.clear();v4G.style.display='flex'">Salir</button></div>
 <script>
 function v4U(){return JSON.parse(localStorage.getItem("v4_u")||'{"admin":"1234"}')}
-function v4K(s){var p=s.trim().toUpperCase().split("-");if(p.length!==3||p[0]!=="EC")return 0;var e=parseInt(p[1],36),g=parseInt(p[2],36);return((e*73+9842)%99991)===g&&(e===99999999||Date.now()<e*86400000)?1:0}
+function v4K(s){var p=s.trim().toUpperCase().split("-");if(p.length!==3||p.at(0)!=="EC")return 0;var e=parseInt(p.at(1),36),g=parseInt(p.at(2),36);return((e*73+9842)%99991)===g&&(e===99999999||Date.now()<e*86400000)?1:0}
 function v4A(){var s=v4s.value.trim().toUpperCase();if(v4K(s)){localStorage.setItem("v4_lic",s);v4L.style.display="none";v4G.style.display="flex"}else v4e1.innerText="Serial inválido o vencido"}
 function v4E(){var u=v4u.value.trim(),p=v4p.value.trim(),d=v4U();if(d[u]===p){sessionStorage.setItem("v4_s",u);v4t.innerText=u;v4db.style.display=u==="admin"?"inline-block":"none";v4G.style.display="none"}else v4e2.innerText="Datos incorrectos"}
 function v4O(){var d=v4U(),h="";for(var k in d)h+="<div>👤 "+k+" ("+d[k]+") "+(k!=="admin"?"<a href='#' style='color:#f87171' onclick='v4B(\""+k+"\");return false'>Borrar</a>":"")+"</div>";v4ls.innerHTML=h;v4D.style.display="flex"}
