@@ -35,45 +35,20 @@
   .btn-vender { background: #22c55e; }
   .btn-del { background: #64748b; }
 </style>
-<link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="apple-touch-icon.png">
-<style>#v4lock{position:fixed;inset:0;z-index:2147483647;background:#0f172a;display:flex;align-items:center;justify-content:center;font-family:sans-serif;color:#fff}#v4card{background:#1e293b;padding:40px;border-radius:16px;border:1px solid #334155;width:420px;text-align:center;box-shadow:0 20px 25px rgba(0,0,0,0.6)}#v4card h2{margin:0 0 8px;color:#38bdf8}#v4card p{margin:0 0 20px;color:#94a3b8;font-size:16px}#v4card input{width:100%;padding:14px;margin:10px 0;border-radius:8px;border:1px solid #475569;background:#0f172a;color:#fff;font-size:20px;text-align:center;letter-spacing:2px;text-transform:uppercase;box-sizing:border-box}#v4card button{width:100%;padding:16px;border:none;border-radius:8px;background:#0284c7;color:#fff;font-size:18px;font-weight:bold;margin-top:10px;cursor:pointer}#v4err{color:#f87171;display:none;margin-top:12px;font-size:16px}</style>
 </head>
-<body>
-<div id="v4lock"><div id="v4card"><h2>ACTIVACIÓN DE LICENCIA</h2><p id="v4msg">Ingrese su serial único de cliente</p><input id="v4s" placeholder="EC-XXXX-XXXX"><button onclick="v4go()">ACTIVAR SISTEMA</button><div id="v4err">Serial inválido o vencido</div></div></div>
+<body><div id="v4bar"><span id="v4tag">Turno: admin</span><button id="v4dbtn" onclick="v4abrirDash()">Dashboard Admin</button><button id="v4out" onclick="v4salir()">Cerrar Sesión</button></div>
 <script>
-function v4chk(s){
-  s = s.trim().toUpperCase();
-  let p = s.split('-');
-  if(p.length !== 3 || p[0] !== 'EC') return 0;
-  let exp = parseInt(p[1], 36), sig = parseInt(p[2], 36);
-  if(isNaN(exp) || isNaN(sig)) return 0;
-  if(((exp * 73 + 9842) % 99991) !== sig) return 0;
-  if(exp !== 99999999 && Date.now() > exp * 86400000) return -1;
-  return exp;
-}
-function v4go(){
-  let s = document.getElementById("v4s").value;
-  let r = v4chk(s);
-  if(r > 0){
-    try{ localStorage.setItem("v4_lic", s.trim().toUpperCase()); }catch(e){}
-    document.getElementById("v4lock").style.display = "none";
-  } else {
-    let e = document.getElementById("v4err");
-    e.innerText = r === -1 ? "Licencia vencida (30 días cumplidos)" : "Serial incorrecto";
-    e.style.display = "block";
-  }
-}
-(function(){
-  try{
-    let s = localStorage.getItem("v4_lic");
-    if(s){
-      let r = v4chk(s);
-      if(r > 0) document.getElementById("v4lock").style.display = "none";
-      else if(r === -1) document.getElementById("v4msg").innerText = "Su periodo de 30 días ha finalizado. Ingrese nuevo serial:";
-    }
-  }catch(e){}
-  if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
-})();
+function v4users(){let u=localStorage.getItem("v4_users");return u?JSON.parse(u):{"admin":"1234"}}
+function v4chk(s){s=s.trim().toUpperCase();let p=s.split('-');if(p.length!==3||p[0]!=='EC')return 0;let exp=parseInt(p[1],36),sig=parseInt(p[2],36);if(isNaN(exp)||isNaN(sig))return 0;if(((exp*73+9842)%99991)!==sig)return 0;if(exp!==99999999&&Date.now()>exp*86400000)return -1;return exp}
+function v4act(){let s=document.getElementById("v4s").value,r=v4chk(s);if(r>0){try{localStorage.setItem("v4_lic",s.trim().toUpperCase())}catch(e){}document.getElementById("v4lic").style.display="none";document.getElementById("v4log").style.display="flex"}else{let e=document.getElementById("v4err1");e.innerText=r===-1?"Licencia vencida (30 días cumplidos)":"Serial incorrecto";e.style.display="block"}}
+function v4rol(u){document.getElementById("v4tag").innerText="Turno: "+u;document.getElementById("k_usr").innerText=u;document.getElementById("v4dbtn").style.display=(u==="admin"?"inline-block":"none")}
+function v4entrar(){let u=document.getElementById("v4u").value.trim(),p=document.getElementById("v4p").value.trim(),db=v4users();if(db[u]&&db[u]===p){sessionStorage.setItem("v4_ses",u);v4rol(u);document.getElementById("v4log").style.display="none"}else{document.getElementById("v4err2").style.display="block"}}
+function v4salir(){sessionStorage.removeItem("v4_ses");document.getElementById("v4p").value="";document.getElementById("v4log").style.display="flex"}
+function v4abrirDash(){let db=v4users();document.getElementById("k_cnt").innerText=Object.keys(db).length;let h="";for(let k in db){h+="<div style='display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b'><span>👤 <b>"+k+"</b> (Clave: "+db[k]+")</span>"+(k!=="admin"?"<a href='#' style='color:#f87171' onclick='v4del(\""+k+"\");return false'>Eliminar</a>":"")+"</div>"}document.getElementById("v4list").innerHTML=h;document.getElementById("v4dash").style.display="flex"}
+function v4crear(){let nu=document.getElementById("v4nu").value.trim(),np=document.getElementById("v4np").value.trim(),db=v4users();if(nu&&np){db[nu]=np;localStorage.setItem("v4_users",JSON.stringify(db));document.getElementById("v4nu").value="";document.getElementById("v4np").value="";v4abrirDash()}}
+function v4del(k){let db=v4users();delete db[k];localStorage.setItem("v4_users",JSON.stringify(db));v4abrirDash()}
+function v4csv(){let f=["Clave,Contenido"];for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i),v=(localStorage.getItem(k)||"").replace(/"/g,'""').replace(/\n/g,' ');f.push('"'+k+'","'+v+'"')}let a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\uFEFF"+f.join("\n")],{type:"text/csv;charset=utf-8;"}));a.download="Reporte_Tienda_"+new Date().toISOString().slice(0,10)+".csv";a.click()}
+(function(){try{let s=localStorage.getItem("v4_lic");if(s){let r=v4chk(s);if(r>0){document.getElementById("v4lic").style.display="none";let u=sessionStorage.getItem("v4_ses");if(!u)document.getElementById("v4log").style.display="flex";else v4rol(u)}else if(r===-1){document.getElementById("v4msg").innerText="Licencia de 30 días vencida. Ingrese nuevo serial:"}}}catch(e){}if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");})();
 </script>
 
 <div class="top-bar">
