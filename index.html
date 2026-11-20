@@ -155,12 +155,14 @@ actualizarTodo();
 <div id="v4Caj" style="display:none;position:fixed;inset:0;top:56px;z-index:99998;background:#0f172a;color:#fff;font-family:sans-serif;padding:16px;overflow-y:auto"><div style="max-width:750px;margin:0 auto"><h2 style="color:#38bdf8;margin:0 0 10px">CAJA Y PUNTO DE VENTA</h2><input id="v4bq" oninput="v4PintarCaja()" placeholder="Buscar producto para cobrar..." style="width:100%;padding:12px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:16px;margin-bottom:12px;box-sizing:border-box"><div id="v4tabla"></div></div></div>
 <script>
 function v4U(){return JSON.parse(localStorage.getItem("v4_u")||'{"admin":"1234"}')}
-function v4K(s){var p=s.trim().toUpperCase().split("-");if(p.length!==3||p.at(0)!=="EC")return 0;var e=parseInt(p.at(1),36),g=parseInt(p.at(2),36);return((e*73+9842)%99991)===g&&(e===99999999||Date.now()<e*86400000)?1:0}
-function v4A(){var s=v4s.value.trim().toUpperCase();if(v4K(s)){localStorage.setItem("v4_lic",s);v4L.style.display="none";v4G.style.display="flex"}else v4e1.innerText="Serial inválido o vencido"}
+function v4K(s){var p=s.trim().toUpperCase().split("-");if(p.length!==3||p[0]!=="EC")return 0;var e=parseInt(p[1],36),g=parseInt(p[2],36);return((e*73+9842)%99991)===g&&(e===99999999||Date.now()<e*86400000)?1:0}
+function v4A(){var s=v4s.value.trim().toUpperCase();if(v4K(s)){localStorage.setItem("v4_lic",s);v4L.style.display="none";v4G.style.display="flex"}else v4e1.innerText="Serial inválido"}
+function v4E(){var u=v4u.value.trim(),p=v4p.value.trim(),d=v4U();if(d[u]===p){sessionStorage.setItem("v4_s",u);v4t.innerText=u;v4db.style.display=u==="admin"?"inline-block":"none";v4G.style.display="none"}else v4e2.innerText="Datos incorrectos"}
 function v4O(){var d=v4U(),h="";for(var k in d)h+="<div>👤 "+k+" ("+d[k]+") "+(k!=="admin"?"<a href='#' style='color:#f87171' onclick='v4B(\""+k+"\");return false'>Borrar</a>":"")+"</div>";v4ls.innerHTML=h;v4D.style.display="flex"}
 function v4C(){var d=v4U();if(v4nu.value&&v4np.value){d[v4nu.value.trim()]=v4np.value.trim();localStorage.setItem("v4_u",JSON.stringify(d));v4nu.value=v4np.value="";v4O()}}
 function v4B(k){var d=v4U();delete d[k];localStorage.setItem("v4_u",JSON.stringify(d));v4O()}
 function v4X(){var f=["Clave,Datos"];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);f.push('"'+k+'","'+(localStorage.getItem(k)||"").replace(/"/g,'""')+'"')}var a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\uFEFF"+f.join("\n")],{type:"text/csv"}));a.download="Reporte.csv";a.click()}
+if(v4K(localStorage.getItem("v4_lic")||"")){v4L.style.display="none";var s=sessionStorage.getItem("v4_s");if(!s)v4G.style.display="flex";else{v4t.innerText=s;v4db.style.display=s==="admin"?"inline-block":"none"}}
 </script>
 <script>
 function v4DB(){for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i),v=localStorage.getItem(k);if(v&&v.indexOf("[")===0&&v.indexOf("venta")>-1)return{k:k,d:JSON.parse(v)}}return null}
