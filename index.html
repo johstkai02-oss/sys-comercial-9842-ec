@@ -271,6 +271,7 @@ function v4OkSurtir(todo) {
   else if (typeof guardar === "function") guardar();
   if (typeof v4PintarCaja === "function") v4PintarCaja();
   if (typeof v4PC === "function") v4PC();
+  if (typeof productos !== "undefined") productos = JSON.parse(localStorage.getItem("tienda_v4_datos")) || productos;
   if (typeof actualizarTodo === "function") actualizarTodo();
   v4BoxSurtir.style.display = "none";
 }
