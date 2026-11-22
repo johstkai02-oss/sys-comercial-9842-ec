@@ -314,6 +314,19 @@ function venderUno(i) {
   v4BoxVender.style.display = "flex";
   setTimeout(function(){ v4VInp.focus(); v4VInp.select(); }, 60);
 }
+
+document.addEventListener("click", function(e) {
+  var btn = e.target.closest("button");
+  if (btn && btn.textContent.trim() === "Vender") {
+    var m = (btn.getAttribute("onclick") || "").match(/\((\d+)/);
+    if (m) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      venderUno(parseInt(m[1]));
+    }
+  }
+}, true);
+
 function v4OkVender() {
   var p = productos[v4VIdx];
   if (!p) return;
