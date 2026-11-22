@@ -148,7 +148,7 @@ function actualizarTodo() {
         <td>${p.ventas}</td><td class="ganancia-txt">+$${gProd.toFixed(2)}</td>
         <td><button class="btn-abastecer ${bBaja?'alerta-baja':''}" onclick="abastecerBodega(${i})">Abastecer Bodega</button>
             <button class="btn-surtir ${tBaja&&!bBaja?'alerta-baja':''}" onclick="surtirTienda(${i})">Surtir Tienda</button></td>
-        <td><button class="btn-mini btn-vender" onclick="venderUno(${i})">+1 Venta</button>
+        <td><button class="btn-mini btn-vender" onclick="venderUno(${i})">Vender</button>
             <button class="btn-mini btn-del" onclick="eliminarProducto(${i})">X</button></td></tr>`;
     }
   });
@@ -286,4 +286,45 @@ document.addEventListener("click", function(e) {
     }
   }
 }, true);
+</script>
+
+
+<div id="v4BoxVender" style="display:none;position:fixed;inset:0;z-index:2147483649;background:rgba(15,23,42,0.88);align-items:center;justify-content:center;padding:16px;font-family:sans-serif">
+  <div style="background:#1e293b;border:1px solid #334155;border-radius:16px;padding:20px;width:100%;max-width:320px;color:#fff;text-align:center">
+    <h3 id="v4VTit" style="color:#4ade80;margin:0 0 6px;font-size:18px">Registrar Venta</h3>
+    <p id="v4VInf" style="color:#cbd5e1;font-size:14px;margin:0 0 14px"></p>
+    <input id="v4VInp" type="number" inputmode="numeric" min="1" value="1" placeholder="Cantidad vendida..." onkeydown="if(event.key==='Enter')v4OkVender()" style="width:100%;padding:14px;border-radius:10px;border:2px solid #22c55e;background:#0f172a;color:#fff;font-size:20px;font-weight:bold;text-align:center;box-sizing:border-box;margin-bottom:12px">
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <button type="button" onclick="v4OkVender()" style="flex:1;padding:13px;border:none;border-radius:10px;background:#22c55e;color:#fff;font-weight:bold;font-size:16px">Confirmar Venta</button>
+    </div>
+    <button type="button" onclick="v4BoxVender.style.display='none'" style="width:100%;padding:10px;border:none;border-radius:10px;background:#475569;color:#fff;font-size:14px">Cancelar</button>
+  </div>
+</div>
+<script>
+var v4VIdx = -1;
+function venderUno(i) {
+  productos = JSON.parse(localStorage.getItem("tienda_v4_datos")) || productos;
+  var p = productos[i];
+  if (!p) return;
+  if (p.tienda <= 0) return alert("Sin mercadería en Tienda. Usa Surtir Tienda.");
+  v4VIdx = i;
+  v4VTit.innerText = "Vender: " + p.nombre;
+  v4VInf.innerHTML = "Disponible en Tienda: <b style='color:#4ade80'>" + p.tienda + "</b> &nbsp;|&nbsp; Precio: <b>$" + p.precio.toFixed(2) + "</b>";
+  v4VInp.value = "1";
+  v4BoxVender.style.display = "flex";
+  setTimeout(function(){ v4VInp.focus(); v4VInp.select(); }, 60);
+}
+function v4OkVender() {
+  var p = productos[v4VIdx];
+  if (!p) return;
+  var cant = parseInt(v4VInp.value);
+  if (!cant || cant <= 0) return alert("Escribe una cantidad mayor a 0.");
+  if (cant > p.tienda) return alert("Solo hay " + p.tienda + " unidades disponibles en Tienda.");
+  p.tienda -= cant;
+  p.ventas += cant;
+  guardar();
+  if (typeof actualizarTodo === "function") actualizarTodo();
+  if (typeof v4PC === "function") v4PC();
+  v4BoxVender.style.display = "none";
+}
 </script>
